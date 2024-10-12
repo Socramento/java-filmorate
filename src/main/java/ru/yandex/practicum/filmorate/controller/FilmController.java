@@ -22,7 +22,8 @@ import java.util.Map;
 @RequestMapping("/films")
 @Validated
 public class FilmController {
-    private static final Logger LOG = LoggerFactory.getLogger(FilmController.class);
+    private static final Logger LOG = LoggerFactory
+            .getLogger(FilmController.class);
     private final Map<Long, Film> films = new HashMap<>();
     /**
      * Самая ранняя допустимая дата выпуска фильма (28 декабря 1895 года).
