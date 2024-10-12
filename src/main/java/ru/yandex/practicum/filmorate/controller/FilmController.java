@@ -16,50 +16,51 @@ import java.util.Map;
 @RequestMapping("/films")
 @Validated
 public class FilmController {
-    private static final Logger log = LoggerFactory.getLogger(FilmController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FilmController.class);
     private final Map<Long, Film> films = new HashMap<>();
     public static final LocalDate MOST_EARLE_DATE_RELEASE = LocalDate.of(1895, 12, 28);
+    public static final int MAX_CHARACTERS = 200;
 
     @GetMapping
     public Collection<@Valid Film> findAll() {
-        log.info("Список всех фильмов представлен");
+        LOG.info("Список всех фильмов представлен");
         return films.values();
     }
 
     @PostMapping
-    public Film create(@Valid @RequestBody Film film) {
+    public Film create(@Valid @RequestBody final Film film) {
 
         if (film.getName() == null || film.getName().isBlank()) {
-            log.warn("Пустое название фильма.");
+            LOG.warn("Пустое название фильма.");
             throw new ValidationException("Описание фильма не может быть пусты!");
         }
 
         if (film.getDescription() == null || film.getDescription().isBlank()) {
-            log.warn("Пустое название фильма.");
+            LOG.warn("Пустое название фильма.");
             throw new ValidationException("Описание фильма не может быть пусты!");
         }
 
-        if (film.getDescription().length() > 200) {
-            log.warn("Превышена максимальная длина (200 символов) - {}", film.getDescription().length());
+        if (film.getDescription().length() > MAX_CHARACTERS) {
+            LOG.warn("Превышена максимальная длина (200 символов) - {}", film.getDescription().length());
             throw new ValidationException("Длина описания не должна превышать 200 символов.");
         }
 
         if (film.getReleaseDate().isBefore(MOST_EARLE_DATE_RELEASE)) {
-            log.warn("Дата релиза ранее {}", MOST_EARLE_DATE_RELEASE);
+            LOG.warn("Дата релиза ранее {}", MOST_EARLE_DATE_RELEASE);
             throw new ValidationException("Дата релиза ранее " + MOST_EARLE_DATE_RELEASE);
         }
 
         film.setId(getNextId());
 
         films.put(film.getId(), film);
-        log.info("Фильм добавлен");
+        LOG.info("Фильм добавлен");
         return film;
     }
 
     @PutMapping
-    public Film update(@Valid @RequestBody Film newFilm) {
+    public Film update(@Valid @RequestBody final  Film newFilm) {
         if (newFilm.getId() == null) {
-            log.warn("Не указан ID при внесении изменений через PUT-Film");
+            LOG.warn("Не указан ID при внесении изменений через PUT-Film");
             throw new ValidationException("Какое-то из полей не заполнено!");
         }
 
@@ -68,22 +69,22 @@ public class FilmController {
             Film oldFilm = films.get(newFilm.getId());
 
             if (oldFilm.getId() == null) {
-                log.warn("Не указан ID при внесении изменений через PUT-Film");
+                LOG.warn("Не указан ID при внесении изменений через PUT-Film");
                 throw new ValidationException("Какое-то из полей не заполнено!");
             }
 
             oldFilm.setName(newFilm.getName());
-            log.info("Называние изменено");
+            LOG.info("Называние изменено");
             oldFilm.setDuration(newFilm.getDuration());
-            log.info("Продолжительность изменена");
+            LOG.info("Продолжительность изменена");
             oldFilm.setReleaseDate(newFilm.getReleaseDate());
-            log.info("Дата релиза изменена");
+            LOG.info("Дата релиза изменена");
             oldFilm.setDescription(newFilm.getDescription());
-            log.info("Описание изменено");
+            LOG.info("Описание изменено");
 
             return oldFilm;
         }
-        log.error("Фильм с id - {}  отсутствует!", newFilm.getId());
+        LOG.error("Фильм с id - {}  отсутствует!", newFilm.getId());
         throw new ValidationException("Фильм с ID " + newFilm.getId() + " отсутствует!");
     }
 

@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class FilmorateApplicationTests {
 
-    FilmController filmController = new FilmController();
-    Film film = new Film();
-    UserController userController = new UserController();
-    User user = new User();
+    private FilmController filmController = new FilmController();
+    private Film film = new Film();
+    private UserController userController = new UserController();
+    private User user = new User();
 
     @Test
     public void testNameAndDescriptionFilm() {
@@ -72,12 +72,24 @@ class FilmorateApplicationTests {
         film.setDuration(100L);
         Assertions.assertThrows(ValidationException.class, () -> filmController.create(film));
     }
+
     @Test
-    public void testNullDescription() {
+    public void testNullDescriptionFilm() {
         film.setName("Film 1");
         film.setDescription("");
         film.setReleaseDate(LocalDate.of(2012, 12, 12));
         film.setDuration(100L);
         Assertions.assertThrows(ValidationException.class, () -> filmController.create(film));
     }
+
+    @Test
+    public void testNullLoginUser() {
+        user.setName("Bob");
+        user.setLogin(null);
+        user.setEmail("bob@gmail.com");
+        user.setBirthday(LocalDate.of(1990, 1, 1));
+
+        Assertions.assertThrows(ValidationException.class, () -> userController.create(user));
+    }
+
 }
