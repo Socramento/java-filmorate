@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FilmorateApplication {
 	private static final Logger log = LoggerFactory.getLogger(FilmorateApplication.class);
 
-	public static void main( final String[] args) {
+	public static void main(String[] args) {
 		SpringApplication.run(FilmorateApplication.class, args);
 
 		((ch.qos.logback.classic.Logger) LoggerFactory
