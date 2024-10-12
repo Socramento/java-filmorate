@@ -80,5 +80,4 @@ class FilmorateApplicationTests {
         film.setDuration(100L);
         Assertions.assertThrows(ValidationException.class, () -> filmController.create(film));
     }
-
 }
