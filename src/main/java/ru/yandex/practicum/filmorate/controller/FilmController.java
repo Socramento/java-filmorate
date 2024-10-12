@@ -29,12 +29,12 @@ public class FilmController {
     @PostMapping
     public Film create(@Valid @RequestBody Film film) {
 
-        if (film.getName() == null || film.getName().isBlank() ) {
+        if (film.getName() == null || film.getName().isBlank()) {
             log.warn("Пустое название фильма.");
             throw new ValidationException("Описание фильма не может быть пусты!");
         }
 
-        if (film.getDescription() == null || film.getDescription().isBlank() ) {
+        if (film.getDescription() == null || film.getDescription().isBlank()) {
             log.warn("Пустое название фильма.");
             throw new ValidationException("Описание фильма не может быть пусты!");
         }
@@ -58,7 +58,7 @@ public class FilmController {
 
     @PutMapping
     public Film update(@Valid @RequestBody Film newFilm) {
-        if (newFilm.getId() == null ) {
+        if (newFilm.getId() == null) {
             log.warn("Не указан ID при внесении изменений через PUT-Film");
             throw new ValidationException("Какое-то из полей не заполнено!");
         }
@@ -67,7 +67,7 @@ public class FilmController {
         if (films.containsKey(newFilm.getId())) {
             Film oldFilm = films.get(newFilm.getId());
 
-            if (oldFilm.getId() == null ) {
+            if (oldFilm.getId() == null) {
                 log.warn("Не указан ID при внесении изменений через PUT-Film");
                 throw new ValidationException("Какое-то из полей не заполнено!");
             }
