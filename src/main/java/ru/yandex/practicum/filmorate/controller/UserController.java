@@ -4,7 +4,12 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -27,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@Valid @RequestBody final User user) {
+    public User create(@Valid @RequestBody User user) {
         if (user.getLogin() == null || user.getLogin().isEmpty() || user.getLogin().isBlank()) {
             LOG.warn("Не заполнен ЛОГИН!");
             throw new ValidationException("Не заполнен логин или в нем присутствую пробелы");
@@ -50,7 +55,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User update(@Valid @RequestBody final User newUser) {
+    public User update(@Valid @RequestBody User newUser) {
         if (users.containsKey(newUser.getId())) {
             User oldUser = users.get(newUser.getId());
 

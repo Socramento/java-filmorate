@@ -12,15 +12,15 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest
 class FilmorateApplicationTests {
 
-    private FilmController filmController = new FilmController();
-    private Film film = new Film();
-    private UserController userController = new UserController();
-    private User user = new User();
+     FilmController filmController = new FilmController();
+     Film film = new Film();
+     UserController userController = new UserController();
+     User user = new User();
 
     @Test
     public void testNameAndDescriptionFilm() {

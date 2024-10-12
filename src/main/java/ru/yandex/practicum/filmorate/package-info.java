@@ -1,4 +1,4 @@
 /**
- * Этот пакет содержит исключения.
+ * Этот пакет содержит основной класс.
  */
-package ru.yandex.practicum.filmorate.exceptions;
+package ru.yandex.practicum.filmorate;

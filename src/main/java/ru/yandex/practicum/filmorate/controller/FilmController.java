@@ -4,9 +4,15 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,9 +24,15 @@ import java.util.Map;
 public class FilmController {
     private static final Logger LOG = LoggerFactory.getLogger(FilmController.class);
     private final Map<Long, Film> films = new HashMap<>();
+    /**
+     * Самая ранняя допустимая дата выпуска фильма (28 декабря 1895 года).
+     */
     public static final LocalDate MOST_EARLE_DATE_RELEASE = LocalDate.of(1895, 12, 28);
     public static final int MAX_CHARACTERS = 200;
 
+    /**
+     * GET - запрос.
+     */
     @GetMapping
     public Collection<@Valid Film> findAll() {
         LOG.info("Список всех фильмов представлен");
@@ -28,7 +40,7 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film create(@Valid @RequestBody final Film film) {
+    public Film create(@Valid @RequestBody  Film film) {
 
         if (film.getName() == null || film.getName().isBlank()) {
             LOG.warn("Пустое название фильма.");
@@ -58,7 +70,7 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film update(@Valid @RequestBody final  Film newFilm) {
+    public Film update(@Valid @RequestBody Film newFilm) {
         if (newFilm.getId() == null) {
             LOG.warn("Не указан ID при внесении изменений через PUT-Film");
             throw new ValidationException("Какое-то из полей не заполнено!");
