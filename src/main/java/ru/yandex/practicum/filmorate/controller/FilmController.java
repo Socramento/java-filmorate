@@ -14,6 +14,7 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,9 +36,9 @@ public class FilmController {
      * GET - запрос.
      */
     @GetMapping
-    public Collection<@Valid Film> findAll() {
+    public ArrayList<@Valid Film> findAll() {
         LOG.info("Список всех фильмов представлен");
-        return films.values();
+        return new ArrayList<>(films.values());
     }
 
     @PostMapping
