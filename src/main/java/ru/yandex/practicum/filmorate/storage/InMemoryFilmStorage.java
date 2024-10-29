@@ -1,24 +1,24 @@
-package storage;
+package ru.yandex.practicum.filmorate.storage;
 
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/films")
+
 @Validated
 @Component
-public class InMemoryFilmStorage implements FilmStorage {
+public class InMemoryFilmStorage extends Film implements FilmStorage {
 
     private static final Logger LOG = LoggerFactory.getLogger(InMemoryFilmStorage.class);
     private final Map<Long, Film> films = new HashMap<>();
@@ -31,14 +31,24 @@ public class InMemoryFilmStorage implements FilmStorage {
     /**
      * GET - запрос.
      */
-    @GetMapping
-    public ArrayList<@Valid Film> findAll() {
+    @Override
+    public List<@Valid Film> findAll() {
         LOG.info("Список всех фильмов представлен");
         return new ArrayList<>(films.values());
     }
 
-    @PostMapping
-    public Film create(@Valid @RequestBody Film film) {
+    public Film findById(Long id) {
+        for (Film film : films.values()) {
+            if (film.getId() == id) {
+                return film;
+            }
+        }
+        return films.get(id);
+    }
+
+
+    @Override
+    public Film create(@Valid Film film) {
 
         if (film.getName() == null || film.getName().isBlank()) {
             LOG.warn("Пустое название фильма.");
@@ -67,11 +77,15 @@ public class InMemoryFilmStorage implements FilmStorage {
         return film;
     }
 
-    @PutMapping
-    public Film update(@Valid @RequestBody Film newFilm) {
+    @Override
+    public Film update(@Valid Film newFilm) {
+        if (newFilm == null) {
+            throw new NotFoundException("Значение newFilm отсутствует");
+        }
+
         if (newFilm.getId() == null) {
             LOG.warn("Не указан ID при внесении изменений через PUT-Film");
-            throw new ValidationException("Какое-то из полей не заполнено!");
+            throw new NotFoundException("Какое-то из полей не заполнено!");
         }
 
 
@@ -80,7 +94,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
             if (oldFilm.getId() == null) {
                 LOG.warn("Не указан ID при внесении изменений через PUT-Film");
-                throw new ValidationException("Какое-то из полей не заполнено!");
+                throw new NotFoundException("Какое-то из полей не заполнено!");
             }
 
             oldFilm.setName(newFilm.getName());
@@ -95,7 +109,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             return oldFilm;
         }
         LOG.error("Фильм с id - {}  отсутствует!", newFilm.getId());
-        throw new ValidationException("Фильм с ID " + newFilm.getId() + " отсутствует!");
+        throw new NotFoundException("Фильм с ID " + newFilm.getId() + " отсутствует!");
     }
 
     private long getNextId() {

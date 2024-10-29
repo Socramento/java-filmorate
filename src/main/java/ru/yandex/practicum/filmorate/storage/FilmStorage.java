@@ -1,17 +1,17 @@
-package storage;
+package ru.yandex.practicum.filmorate.storage;
+
 
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.filmorate.model.Film;
-
-import java.util.ArrayList;
+import java.util.List;
 
 public interface FilmStorage {
 
-     ArrayList<@Valid Film> findAll();
+    List<Film> findAll();
 
-     Film create(@Valid @RequestBody Film film);
+    Film findById(Long id);
 
-     Film update(@Valid @RequestBody Film newFilm);
+    Film create(@Valid  Film film);
 
+    Film update(@Valid Film newFilm);
 }

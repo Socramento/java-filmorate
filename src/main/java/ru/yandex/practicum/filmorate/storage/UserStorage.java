@@ -1,17 +1,22 @@
-package storage;
+package ru.yandex.practicum.filmorate.storage;
 
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 public interface UserStorage {
 
-     ArrayList<@Valid User> findAll();
+     List<User> findAll();
 
-     User create(@Valid @RequestBody User user);
+     User findById(Long id);
 
-     User update(@Valid @RequestBody User newUser);
+     User create(@Valid   User user);
+
+     User update(@Valid  User newUser);
+
+
+
+
 }
