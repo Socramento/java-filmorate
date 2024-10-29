@@ -70,7 +70,7 @@ public class FilmService {
     }
 
 
-    public List<Film> TopCountMostLikedFilms(int count) {
+    public List<Film> topCountMostLikedFilms(int count) {
         return filmStorage.findAll().stream()
                 .sorted(Comparator.comparingInt(film -> -film.getLikes().size())) // Сортировка по количеству лайков
                 .limit(count)
