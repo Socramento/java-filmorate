@@ -81,7 +81,7 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <phase>site</phase>
+                        <phase>validate</phase>
                     </execution>
                 </executions>
 

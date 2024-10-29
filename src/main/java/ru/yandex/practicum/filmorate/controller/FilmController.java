@@ -15,7 +15,13 @@ import java.util.List;
 @RequestMapping("/films")
 @Validated
 public class FilmController {
+    /**
+     * filmService
+     */
     private final FilmService filmService;
+    /**
+     * Logger
+     */
     private static final Logger LOG = LoggerFactory.getLogger(FilmController.class);
     /**
      * Самая ранняя допустимая дата выпуска фильма (28 декабря 1895 года).

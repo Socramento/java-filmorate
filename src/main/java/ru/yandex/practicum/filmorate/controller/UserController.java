@@ -3,8 +3,6 @@ package ru.yandex.practicum.filmorate.controller;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
@@ -49,12 +47,6 @@ public class UserController {
     public User addFriend(@PathVariable Long id, @PathVariable  Long friendId) {
         return userService.addFriend(id, friendId);
     }
-
-//    @PutMapping("/{id}/friends")
-//    public ResponseEntity<String> addFriendWithoutFriendId(@PathVariable Long id) {
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Параметр 'friendId' не указан.");
-//    }
-
 
 
     @DeleteMapping("/{id}/friends/{friendId}")
