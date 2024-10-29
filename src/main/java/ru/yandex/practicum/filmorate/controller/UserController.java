@@ -50,10 +50,10 @@ public class UserController {
         return userService.addFriend(id, friendId);
     }
 
-    @PutMapping("/{id}/friends")
-    public ResponseEntity<String> addFriendWithoutFriendId(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Параметр 'friendId' не указан.");
-    }
+//    @PutMapping("/{id}/friends")
+//    public ResponseEntity<String> addFriendWithoutFriendId(@PathVariable Long id) {
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Параметр 'friendId' не указан.");
+//    }
 
 
 
@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends")
-    public Set<Long> getFriends(@PathVariable Long id) {
+    public Set<User> getFriends(@PathVariable Long id) {
        return userService.getFriends(id);
     }
 

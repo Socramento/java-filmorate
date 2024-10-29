@@ -80,7 +80,7 @@ public class UserService {
     }
 
 
-    public Set<Long> getFriends(Long id) {
+    public Set<User> getFriends(Long id) {
         if (userStorage.findById(id) == null) {
             throw new NotFoundException("Пользователь с Id - " + id + " не найден!");
         }
@@ -90,7 +90,9 @@ public class UserService {
             throw new NotFoundException("У пользователя с Id " + id + " нет друзей!");
         }
 
-        return user.getFriends();
+        return user.getFriends().stream()
+                .map(userStorage::findById)
+                .collect(Collectors.toSet());
     }
 
     public Set<User> getCommonFriends(Long userId, Long otherId) {
