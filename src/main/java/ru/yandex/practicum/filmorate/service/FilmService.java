@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import java.util.Comparator;
 import java.util.List;
@@ -14,12 +13,10 @@ import java.util.stream.Collectors;
 @Service
 public class FilmService {
     private final FilmStorage filmStorage;
-    private final UserService userService;
 
     @Autowired
-    public FilmService(FilmStorage filmStorage, UserService userService) {
+    public FilmService(FilmStorage filmStorage) {
         this.filmStorage = filmStorage;
-        this.userService = userService;
     }
 
     public List<Film> findAll() {
@@ -40,7 +37,6 @@ public class FilmService {
 
     public Film addLike(Long filmId, Long userId) {
         Film likedFilm = Optional.ofNullable(filmStorage.findById(filmId)).orElseThrow(() -> new NotFoundException("Фильма с Id - " + filmId + " не найден!"));
-        //User user = Optional.ofNullable(userService.findById(userId)).orElseThrow(() -> new NotFoundException("Пользователь с Id - " + userId + " не найден!"));
 
         likedFilm.getLikes().add(userId);
         return likedFilm;
@@ -48,7 +44,6 @@ public class FilmService {
 
     public String removeLike(Long filmId, Long userId) {
         Film likedFilm = Optional.ofNullable(filmStorage.findById(filmId)).orElseThrow(() -> new NotFoundException("Фильма с Id - " + filmId + " не найден!"));
-        //User user = Optional.ofNullable(userService.findById(userId)).orElseThrow(() -> new NotFoundException("Пользователь с Id - " + userId + " не найден!"));
 
         likedFilm.getLikes().remove(userId);
 
