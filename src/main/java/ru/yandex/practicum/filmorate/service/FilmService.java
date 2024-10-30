@@ -38,12 +38,20 @@ public class FilmService {
     public Film addLike(Long filmId, Long userId) {
         Film likedFilm = Optional.ofNullable(filmStorage.findById(filmId)).orElseThrow(() -> new NotFoundException("Фильма с Id - " + filmId + " не найден!"));
 
+        if (userId == null) {
+            throw new NotFoundException("Пользователь с Id - " + userId + " не найден!");
+        }
+
         likedFilm.getLikes().add(userId);
         return likedFilm;
     }
 
     public String removeLike(Long filmId, Long userId) {
         Film likedFilm = Optional.ofNullable(filmStorage.findById(filmId)).orElseThrow(() -> new NotFoundException("Фильма с Id - " + filmId + " не найден!"));
+
+        if (userId == null) {
+            throw new NotFoundException("Пользователь с Id - " + userId + " не найден!");
+        }
 
         likedFilm.getLikes().remove(userId);
 
