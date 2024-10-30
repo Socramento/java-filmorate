@@ -4,7 +4,15 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
@@ -15,19 +23,12 @@ import java.util.List;
 @RequestMapping("/films")
 @Validated
 public class FilmController {
-    /**
-     * filmService
-     */
+    /** filmService.*/
     private final FilmService filmService;
-    /**
-     * Logger
-     */
+    /** Logger.*/
     private static final Logger LOG = LoggerFactory.getLogger(FilmController.class);
-    /**
-     * Самая ранняя допустимая дата выпуска фильма (28 декабря 1895 года).
-     */
+    /** Самая ранняя допустимая дата выпуска фильма (28 декабря 1895 года).*/
     public static final LocalDate MOST_EARLE_DATE_RELEASE = LocalDate.of(1895, 12, 28);
-    public static final int MAX_CHARACTERS = 200;
 
     public FilmController(FilmService filmService) {
         this.filmService = filmService;
@@ -70,7 +71,7 @@ public class FilmController {
     public List<Film> topCountMostLikedFilms(@RequestParam (defaultValue = "10", required = false) int count) {
         return filmService.topCountMostLikedFilms(count);
     }
-
+/**Чек стаил и поменяй фазу*/
 }
 
 

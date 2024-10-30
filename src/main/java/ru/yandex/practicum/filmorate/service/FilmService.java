@@ -43,8 +43,12 @@ public class FilmService {
         Film likedFilm = filmStorage.findById(filmId);
         User user = userService.findById(userId);
 
-        if (likedFilm == null) {throw new ValidationException("Фильма с Id - " + filmId + " не найден!");}
-        if (user == null) {throw new ValidationException("Пользователь с Id - " + userId + " не найден!");}
+        if (likedFilm == null) {
+            throw new ValidationException("Фильма с Id - " + filmId + " не найден!");
+        }
+        if (user == null) {
+            throw new ValidationException("Пользователь с Id - " + userId + " не найден!");
+        }
 
         likedFilm.getLikes().add(userId);
 
@@ -65,10 +69,8 @@ public class FilmService {
 
         likedFilm.getLikes().remove(userId);
 
-
         return "Пользователь c ID - " + userId + " удалил Лайк, фильму под номером " + filmId;
     }
-
 
     public List<Film> topCountMostLikedFilms(int count) {
         return filmStorage.findAll().stream()
@@ -76,5 +78,4 @@ public class FilmService {
                 .limit(count)
                 .collect(Collectors.toList());
     }
-
 }
