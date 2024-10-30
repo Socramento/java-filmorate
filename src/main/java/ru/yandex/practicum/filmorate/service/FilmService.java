@@ -51,7 +51,6 @@ public class FilmService {
         }
 
         likedFilm.getLikes().add(userId);
-
         return likedFilm;
     }
 
