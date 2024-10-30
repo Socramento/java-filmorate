@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +16,12 @@ import java.util.stream.Collectors;
 @Service
 public class FilmService {
     private final FilmStorage filmStorage;
+    private final UserStorage userStorage;
 
     @Autowired
-    public FilmService(FilmStorage filmStorage) {
+    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
         this.filmStorage = filmStorage;
+        this.userStorage = userStorage;
     }
 
     public List<Film> findAll() {
@@ -37,10 +42,7 @@ public class FilmService {
 
     public Film addLike(Long filmId, Long userId) {
         Film likedFilm = Optional.ofNullable(filmStorage.findById(filmId)).orElseThrow(() -> new NotFoundException("Фильма с Id - " + filmId + " не найден!"));
-
-        if (userId == null) {
-            throw new NotFoundException("Пользователь с Id - " + userId + " не найден!");
-        }
+        User user = Optional.ofNullable(userStorage.findById(userId)).orElseThrow(() -> new NotFoundException("Пользователь с Id - " + userId + " не найден!"));
 
         likedFilm.getLikes().add(userId);
         return likedFilm;
@@ -48,10 +50,7 @@ public class FilmService {
 
     public String removeLike(Long filmId, Long userId) {
         Film likedFilm = Optional.ofNullable(filmStorage.findById(filmId)).orElseThrow(() -> new NotFoundException("Фильма с Id - " + filmId + " не найден!"));
-
-        if (userId == null) {
-            throw new NotFoundException("Пользователь с Id - " + userId + " не найден!");
-        }
+        User user = Optional.ofNullable(userStorage.findById(userId)).orElseThrow(() -> new NotFoundException("Пользователь с Id - " + userId + " не найден!"));
 
         likedFilm.getLikes().remove(userId);
 
@@ -60,7 +59,7 @@ public class FilmService {
 
     public List<Film> topCountMostLikedFilms(int count) {
         return filmStorage.findAll().stream()
-                .sorted(Comparator.comparingInt(film -> -film.getLikes().size())) // Сортировка по количеству лайков
+                .sorted(Comparator.comparingInt(film -> -film.getLikes().size()))
                 .limit(count)
                 .collect(Collectors.toList());
     }
