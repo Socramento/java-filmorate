@@ -23,12 +23,11 @@ import java.util.List;
 @RequestMapping("/films")
 @Validated
 public class FilmController {
+
     /** filmService.*/
     private final FilmService filmService;
     /** Logger.*/
     private static final Logger LOG = LoggerFactory.getLogger(FilmController.class);
-    /** Самая ранняя допустимая дата выпуска фильма (28 декабря 1895 года).*/
-    public static final LocalDate MOST_EARLE_DATE_RELEASE = LocalDate.of(1895, 12, 28);
 
     public FilmController(FilmService filmService) {
         this.filmService = filmService;
