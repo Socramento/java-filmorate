@@ -9,7 +9,6 @@ public class ErrorResponse {
         this.description = description;
     }
 
-
     public String getError() {
         return error;
     }

@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
@@ -21,16 +22,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/films")
 @Validated
+@RequiredArgsConstructor
 public class FilmController {
 
-    /** filmService.*/
     private final FilmService filmService;
-    /** Logger.*/
     private static final Logger LOG = LoggerFactory.getLogger(FilmController.class);
-
-    public FilmController(FilmService filmService) {
-        this.filmService = filmService;
-    }
 
     @GetMapping
     public List<@Valid Film> findAll() {
@@ -69,7 +65,6 @@ public class FilmController {
     public List<Film> topCountMostLikedFilms(@RequestParam (defaultValue = "10", required = false) int count) {
         return filmService.topCountMostLikedFilms(count);
     }
-/**Чек стаил и поменяй фазу*/
 }
 
 

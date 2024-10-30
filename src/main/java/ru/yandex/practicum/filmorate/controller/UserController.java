@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
@@ -14,32 +15,29 @@ import java.util.Set;
 @RestController
 @RequestMapping("/users")
 @Validated
+@RequiredArgsConstructor
 public class UserController {
     private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
     @GetMapping("/{id}")
     public User findById(@PathVariable("id") Long id) {
-        return userService.findById(id);  // Используем UserService
+        return userService.findById(id);
     }
 
     @GetMapping
     public List<User> findAll() {
-        return userService.findAll();  // Используем UserService
+        return userService.findAll();
     }
 
     @PostMapping
     public User create(@Valid @RequestBody User user) {
-        return userService.create(user);  // Используем UserService для создания
+        return userService.create(user);
     }
 
     @PutMapping
     public User update(@Valid @RequestBody User newUser) {
-        return userService.update(newUser);  // Используем UserService для обновления
+        return userService.update(newUser);
     }
 
 
@@ -63,7 +61,6 @@ public class UserController {
     public Set<User> getFriendsCommon(@PathVariable Long id,
                                       @PathVariable Long otherId) {
         return userService.getCommonFriends(id, otherId);
-
     }
 }
 

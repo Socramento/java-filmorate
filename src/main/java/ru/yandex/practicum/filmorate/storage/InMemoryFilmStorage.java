@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 @Validated
 @Component
 public class InMemoryFilmStorage extends Film implements FilmStorage {
@@ -28,9 +27,6 @@ public class InMemoryFilmStorage extends Film implements FilmStorage {
     public static final LocalDate MOST_EARLE_DATE_RELEASE = LocalDate.of(1895, 12, 28);
     public static final int MAX_CHARACTERS = 200;
 
-    /**
-     * GET - запрос.
-     */
     @Override
     public List<@Valid Film> findAll() {
         LOG.info("Список всех фильмов представлен");
@@ -38,18 +34,11 @@ public class InMemoryFilmStorage extends Film implements FilmStorage {
     }
 
     public Film findById(Long id) {
-        for (Film film : films.values()) {
-            if (film.getId() == id) {
-                return film;
-            }
-        }
         return films.get(id);
     }
 
-
     @Override
     public Film create(@Valid Film film) {
-
         if (film.getName() == null || film.getName().isBlank()) {
             LOG.warn("Пустое название фильма.");
             throw new ValidationException("Описание фильма не может быть пусты!");

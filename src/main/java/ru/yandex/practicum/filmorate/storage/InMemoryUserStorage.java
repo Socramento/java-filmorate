@@ -18,20 +18,12 @@ import java.util.Map;
 @Validated
 @Component
 public class InMemoryUserStorage extends User implements UserStorage {
-
     private static final Logger LOG = LoggerFactory.getLogger(InMemoryUserStorage.class);
     private final Map<Long, User> users = new HashMap<>();
 
-
     public User findById(Long id) {
-        for (User user : users.values()) {
-            if (user.getId() == id) {
-                return user;
-            }
-        }
         return users.get(id);
     }
-
 
     public List<@Valid User> findAll() {
         LOG.info("Список всех пользователей представлен");
@@ -80,8 +72,6 @@ public class InMemoryUserStorage extends User implements UserStorage {
         LOG.warn("Пользователь с id -  {}  отсутствует!", newUser.getId());
         throw new NotFoundException("Пользователь с ID " + newUser.getId() + " отсутствует!");
     }
-
-
 
     private long getNextId() {
         long currentMaxId = users.keySet()

@@ -31,11 +31,11 @@ public class UserService {
     }
 
     public User create(User user) {
-        return userStorage.create(user); // Сохраняем через UserStorage
+        return userStorage.create(user);
     }
 
     public User update(User newUser) {
-        return userStorage.update(newUser); // Обновляем через UserStorage
+        return userStorage.update(newUser);
     }
 
 
@@ -44,10 +44,8 @@ public class UserService {
             throw new NotFoundException("Один из пользователей не найден!");
         }
 
-        User user = Optional.ofNullable(userStorage.findById(id))
-                .orElseThrow(() -> new NotFoundException("Пользователь с Id " + id + " не найден!"));
-        User friend = Optional.ofNullable(userStorage.findById(friendId))
-                .orElseThrow(() -> new NotFoundException("Пользователь с Id " + friendId + " не найден!"));
+        User user = Optional.ofNullable(userStorage.findById(id)).orElseThrow(() -> new NotFoundException("Пользователь с Id " + id + " не найден!"));
+        User friend = Optional.ofNullable(userStorage.findById(friendId)).orElseThrow(() -> new NotFoundException("Пользователь с Id " + friendId + " не найден!"));
 
         user.getFriends().add(friendId);
         friend.getFriends().add(id);
@@ -65,20 +63,13 @@ public class UserService {
             throw new NotFoundException("Друг с Id - " + friendId + " не найден!");
         }
 
-        User user = userStorage.findById(userId);
-        User friend = userStorage.findById(friendId);
-        if (friend == null) {
-            throw new ValidationException("Человек, которого вы хотите удалить из друзей с Id " + friend + " не найден!");
-        }
+        User user = Optional.ofNullable(userStorage.findById(userId)).orElseThrow(() -> new NotFoundException("Пользователь с Id - " + userId + " не найден!"));
+        User friend = Optional.ofNullable(userStorage.findById(friendId)).orElseThrow(() -> new NotFoundException("Человек, которого вы хотите удалить из друзей с Id " + friendId + " не найден!"));
 
-        if (user == null) {
-            throw new ValidationException("Пользователь с Id - " + userId + " не найден!");
-        }
         user.getFriends().remove(friendId);
         friend.getFriends().remove(userId);
         return user;
     }
-
 
     public Set<User> getFriends(Long id) {
         if (userStorage.findById(id) == null) {
@@ -96,16 +87,12 @@ public class UserService {
     }
 
     public Set<User> getCommonFriends(Long userId, Long otherId) {
-
-        User user = Optional.ofNullable(userStorage.findById(userId))
-                .orElseThrow(() -> new ValidationException("Пользователь с ID " + userId + " не найден"));
-        User otherUser = Optional.ofNullable(userStorage.findById(otherId))
-                .orElseThrow(() -> new ValidationException("Пользователь с ID " + otherId + " не найден"));
+        User user = Optional.ofNullable(userStorage.findById(userId)).orElseThrow(() -> new ValidationException("Пользователь с ID " + userId + " не найден"));
+        User otherUser = Optional.ofNullable(userStorage.findById(otherId)).orElseThrow(() -> new ValidationException("Пользователь с ID " + otherId + " не найден"));
 
         return user.getFriends().stream()
                 .filter(otherUser.getFriends()::contains)
                 .map(userStorage::findById)
                 .collect(Collectors.toSet());
     }
-
 }

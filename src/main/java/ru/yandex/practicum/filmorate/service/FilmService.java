@@ -6,9 +6,9 @@ import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
-
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,32 +39,16 @@ public class FilmService {
     }
 
     public Film addLike(Long filmId, Long userId) {
-
-        Film likedFilm = filmStorage.findById(filmId);
-        User user = userService.findById(userId);
-
-        if (likedFilm == null) {
-            throw new NotFoundException("Фильма с Id - " + filmId + " не найден!");
-        }
-        if (user == null) {
-            throw new NotFoundException("Пользователь с Id - " + userId + " не найден!");
-        }
+        Film likedFilm = Optional.ofNullable(filmStorage.findById(filmId)).orElseThrow(() -> new NotFoundException("Фильма с Id - " + filmId + " не найден!"));
+        //User user = Optional.ofNullable(userService.findById(userId)).orElseThrow(() -> new NotFoundException("Пользователь с Id - " + userId + " не найден!"));
 
         likedFilm.getLikes().add(userId);
         return likedFilm;
     }
 
     public String removeLike(Long filmId, Long userId) {
-        Film likedFilm = filmStorage.findById(filmId);
-        User user = userService.findById(userId);
-
-        if (likedFilm == null) {
-            throw new NotFoundException("Фильма с Id - " + filmId + " не существует!");
-        }
-
-        if (user == null) {
-            throw new NotFoundException("Пользователь с Id - " + userId + " не существует!");
-        }
+        Film likedFilm = Optional.ofNullable(filmStorage.findById(filmId)).orElseThrow(() -> new NotFoundException("Фильма с Id - " + filmId + " не найден!"));
+        //User user = Optional.ofNullable(userService.findById(userId)).orElseThrow(() -> new NotFoundException("Пользователь с Id - " + userId + " не найден!"));
 
         likedFilm.getLikes().remove(userId);
 
