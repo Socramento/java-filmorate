@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.InternalServerErrorException;
+import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
@@ -44,10 +45,10 @@ public class FilmService {
         User user = userService.findById(userId);
 
         if (likedFilm == null) {
-            throw new InternalServerErrorException("Фильма с Id - " + filmId + " не найден!");
+            throw new NotFoundException("Фильма с Id - " + filmId + " не найден!");
         }
         if (user == null) {
-            throw new InternalServerErrorException("Пользователь с Id - " + userId + " не найден!");
+            throw new NotFoundException("Пользователь с Id - " + userId + " не найден!");
         }
 
         likedFilm.getLikes().add(userId);
@@ -59,11 +60,11 @@ public class FilmService {
         User user = userService.findById(userId);
 
         if (likedFilm == null) {
-            throw new InternalServerErrorException("Фильма с Id - " + filmId + " не существует!");
+            throw new NotFoundException("Фильма с Id - " + filmId + " не существует!");
         }
 
         if (user == null) {
-            throw new InternalServerErrorException("Пользователь с Id - " + userId + " не существует!");
+            throw new NotFoundException("Пользователь с Id - " + userId + " не существует!");
         }
 
         likedFilm.getLikes().remove(userId);
