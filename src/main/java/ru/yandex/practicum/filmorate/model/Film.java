@@ -6,10 +6,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
-/**
- * Film.
- */
 @Data
 @Getter
 @Setter
@@ -23,4 +22,5 @@ public class Film {
     private LocalDate releaseDate;
     @Positive(message = "Значение должно быть положительным")
     private Long duration;
+    private Set<Long> likes = new HashSet<>();
 }

@@ -3,12 +3,11 @@ package ru.yandex.practicum.filmorate;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.Assertions;
-
-import ru.yandex.practicum.filmorate.controller.FilmController;
-import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.time.LocalDate;
 
@@ -17,10 +16,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 @SpringBootTest
 class FilmorateApplicationTests {
 
-     FilmController filmController = new FilmController();
-     Film film = new Film();
-     UserController userController = new UserController();
-     User user = new User();
+
+    InMemoryFilmStorage inMemoryFilmStorage = new InMemoryFilmStorage();
+    InMemoryUserStorage inMemoryUserStorage = new InMemoryUserStorage();
+
+    User user = new User();
+    Film film = new Film();
 
     @Test
     public void testNameAndDescriptionFilm() {
@@ -40,10 +41,10 @@ class FilmorateApplicationTests {
         film.setReleaseDate(LocalDate.of(1700, 12, 29));
         film.setDuration(100L);
         try {
-            filmController.create(film);
+            inMemoryFilmStorage.create(film);
             fail("Ожидалось исключение ValidationException для даты релиза ранее допустимой");
         } catch (ValidationException e) {
-            Assertions.assertEquals(("Дата релиза ранее " + FilmController.MOST_EARLE_DATE_RELEASE), e.getMessage());
+            Assertions.assertEquals(("Дата релиза ранее " + InMemoryFilmStorage.MOST_EARLE_DATE_RELEASE), e.getMessage());
         }
     }
 
@@ -57,7 +58,7 @@ class FilmorateApplicationTests {
         film.setDuration(100L);
 
         try {
-            filmController.create(film);
+            inMemoryFilmStorage.create(film);
             fail("Ожидалось исключение ValidationException для длины описания фильма более 200 символов");
         } catch (ValidationException e) {
             Assertions.assertEquals("Длина описания не должна превышать 200 символов.", e.getMessage());
@@ -70,7 +71,7 @@ class FilmorateApplicationTests {
         film.setDescription("About Film 1");
         film.setReleaseDate(LocalDate.of(2012, 12, 12));
         film.setDuration(100L);
-        Assertions.assertThrows(ValidationException.class, () -> filmController.create(film));
+        Assertions.assertThrows(ValidationException.class, () -> inMemoryFilmStorage.create(film));
     }
 
     @Test
@@ -79,7 +80,7 @@ class FilmorateApplicationTests {
         film.setDescription("");
         film.setReleaseDate(LocalDate.of(2012, 12, 12));
         film.setDuration(100L);
-        Assertions.assertThrows(ValidationException.class, () -> filmController.create(film));
+        Assertions.assertThrows(ValidationException.class, () -> inMemoryFilmStorage.create(film));
     }
 
     @Test
@@ -89,7 +90,7 @@ class FilmorateApplicationTests {
         user.setEmail("bob@gmail.com");
         user.setBirthday(LocalDate.of(1990, 1, 1));
 
-        Assertions.assertThrows(ValidationException.class, () -> userController.create(user));
+        Assertions.assertThrows(ValidationException.class, () -> inMemoryUserStorage.create(user));
     }
 
 }
